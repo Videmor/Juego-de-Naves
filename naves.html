@@ -3,7 +3,7 @@
 <head>
 	<title></title>
 	<style type="text/css">
-		canvas: {
+		canvas {
 			border: solid;
 		}
 	</style>
@@ -16,7 +16,9 @@
 		window.addEventListener('load', init);
 
 		function init(){
-			console.log("Cargado");
+			var canvas = document.getElementById("micanvas");
+			var ctx = canvas.getContext("2d");
+			console.log(ctx)
 		}
 	</script>
 </body>
