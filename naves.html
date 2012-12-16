@@ -19,10 +19,12 @@
 			var canvas = document.getElementById("micanvas");
 			var ctx = canvas.getContext("2d");
 
+			ctx.globalAlpha = 0.5
 			ctx.fillStyle = "red"
 			ctx.fillRect(10,10,70,70);
 
 			ctx.strokeStyle = "blue"
+			ctx.lineWidth = 10
 			ctx.strokeRect(60,30, 80,60)
 
 		}
