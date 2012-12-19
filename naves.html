@@ -12,13 +12,16 @@
 	<canvas id="micanvas">
 		Tu navegador no soporta Canvas.
 	</canvas>
+	<img src="debian.jpg" id="img" alt="" style="display:none;">
 	<script type="text/javascript">
+
 		window.addEventListener('load', init);
 
 		function init(){
 			var canvas = document.getElementById("micanvas");
 			var ctx = canvas.getContext("2d");
 
+			/********* RECTANGLE **********/
 			// ctx.globalAlpha = 0.5
 			// ctx.fillStyle = "red"
 			// ctx.fillRect(10,10,70,70);
@@ -26,8 +29,22 @@
 			// ctx.strokeStyle = "blue"
 			// ctx.lineWidth = 10
 			// ctx.strokeRect(60,30, 80,60)
+			ctx.strokeStyle = "black";
+			DrawFace(ctx,"red");
+			ctx.strokeRect(0,0,20,20);
 
-			//carita
+			// DrawCanvas(ctx);
+
+
+		}
+
+		function a_radianes(grados){
+			return (grados * Math.PI) / 180;
+		}
+
+		function DrawFace(ctx,color){
+			ctx.save();
+			ctx.strokeStyle = color
 			ctx.beginPath();
 			ctx.arc(50, 50, 10, a_radianes(0), a_radianes(360), false);
 			ctx.moveTo(20,50);
@@ -40,15 +57,15 @@
 			ctx.beginPath();
 			ctx.arc(100, 100, 30, a_radianes(180), a_radianes(360), true);
 			ctx.stroke();
-
-
-
+			ctx.restore();
 		}
 
+		function DrawCanvas(ctx){
 
-		function a_radianes(grados){
-			return (grados * Math.PI) / 180;
+			var img = document.getElementById("img");
+			ctx.drawImage(img, 0, 0, img.width - 120, img.height - 120);
 		}
+
 	</script>
 </body>
 </html>
