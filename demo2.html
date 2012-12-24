@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		canvas {
+			border: solid;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="micanvas">Tu navegador no soporta Canvas.</canvas>
+	<input type="button" id="boton" value="Iniciar">
+	<script type="text/javascript">
+
+		var x= 50, y= 10, direccion = 5, loop = false;
+
+		window.addEventListener('load', init);
+
+		function init(){
+			var canvas = document.getElementById("micanvas");
+			var ctx = canvas.getContext("2d");
+			ctx.fillStyle = "red";
+			ctx.arc(x,y,10,0,7);
+			ctx.fill();
+
+			document.getElementById("boton").addEventListener("click", function(){
+				if (loop ){
+					loop = false;
+					this.value = "Iniciar"
+					window.clearInterval(intervalo);
+				}else{
+					loop = true;
+					this.value = "Detener";
+					intervalo =  window.setInterval(function(){
+						moveDraw(canvas,ctx);
+					},40)
+				}
+			})
+		}
+
+		function moveDraw(canvas, ctx){
+			if ( y > canvas.height - 15) { direccion *= -1 }
+			if ( y < 15) { direccion = Math.abs(direccion) }
+			y += direccion;
+			Draw(canvas, ctx, x, y);
+		}
+
+		function Draw(canvas, ctx, x, y){
+			canvas.width = canvas.width;
+			ctx.fillStyle = "red";
+			ctx.arc(x,y,10,0,7);
+			ctx.fill();
+		}
+
+
+
+	</script>
+</body>
+</html>
