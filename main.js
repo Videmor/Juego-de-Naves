@@ -4,12 +4,14 @@ var ctx = canvas.getContext('2d');
 //crear el objeto de la nave
 var nave = {
 	x: 100,
-	y: 100,
+	y: canvas.height - 100,
 	width: 50,
 	height: 50
 }
 
 var teclado = [];
+
+var disparos = [];
 
 var fondo;
 
@@ -61,11 +63,50 @@ function moveNave(){
 		if (nave.x > limit) nave.x = limit;
 	}
 
+	if( teclado[32] ){
+		if (!teclado.fire){
+			fire();
+			teclado.fire = true;
+		}
+
+	}else teclado.fire = false;
+
+}
+
+function moveDisparos(){
+	for (var i in disparos) {
+		var disparo = disparos[i];
+		disparo.y -= 2;
+	};
+	disparos = disparos.filter(function(disparo){
+		return disparo.y > 0;
+	})
+}
+
+function fire(){
+	disparos.push({
+		x: nave.x + 20,
+		y: nave.y - 10,
+		width: 2,
+		height: 30
+	})
+}
+
+function drawDisparos(){
+	ctx.save();
+	ctx.fillStyle = "white";
+	for (var i in disparos) {
+		var disparo = disparos[i];
+		ctx.fillRect(disparo.x, disparo.y, disparo.width, disparo.height);
+	};
+	ctx.restore();
 }
 
 function frameloop(){
 	moveNave()
+	moveDisparos();
 	drawBackground();
+	drawDisparos();
 	drawNave();
 }
 
