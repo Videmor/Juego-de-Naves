@@ -12,6 +12,13 @@ var nave = {
 var teclado = [];
 
 var disparos = [];
+var enemigos = [];
+var juego = {
+	estado: "iniciando"
+
+};
+
+
 
 var fondo;
 
@@ -20,6 +27,17 @@ function loadMedia(){
 	fondo.src = 'img/fondo.jpg';
 	fondo.onload = function(){
 		var intervalo = window.setInterval(frameloop, 1000/55);
+	}
+}
+
+function DrawEnemy(){
+	for(var i in enemigos){
+		var enemigo = enemigos[i];
+		ctx.save();
+		if (enemigo.estado = "vivo") ctx.fillStyle = "red";
+		if (enemigo.estado = "muerto") ctx.fillStyle = "black";
+		ctx.fillRect(enemigo.x, enemigo.y, enemigo.width, enemigo.height);
+		ctx.restore();
 	}
 }
 
