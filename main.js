@@ -16,6 +16,7 @@ var juego = {
 var teclado = [];
 
 var disparos = [];
+var disparosEnemigos = [];
 var enemigos = [];
 var fondo;
 
@@ -107,7 +108,37 @@ function fire(){
 	})
 }
 
+function dibujarDisparosEnemigos(){
+	for (var i in disparosEnemigos) {
+		var disparo =  disparosEnemigos[i]
+		ctx.save();
+		ctx.fillStyle = "yellow";
+		ctx.fillRect(disparo.x, disparo.y, disparo.width, disparo.height);
+		ctx.restore();
+	};
+}
+
+function moverDisparosEnemigos(){
+	for (var i in disparosEnemigos ) {
+		var disparo =  disparosEnemigos[i];
+		disparo.y += 3;
+	};
+	disparosEnemigos = disparosEnemigos.filter(function(disparo){
+		return disparo.y < canvas.height;
+	})
+}
+
 function actualizaEnemigos(){
+	function agregarDisparosEnemigos(enemigo){
+		return {
+			x: enemigo.x,
+			y: enemigo.y,
+			width: 10,
+			height: 33,
+			contador: 0
+		}
+	}
+
 	if (juego.estado == 'iniciando') {
 		for (var i = 0; i < 10; i++) {
 			enemigos.push({
@@ -127,6 +158,12 @@ function actualizaEnemigos(){
 		if(enemigo && enemigo.estado == "vivo"){
 			enemigo.contador++;
 			enemigo.x += Math.sin(enemigo.contador * Math.PI / 90) * 9;
+			// if (aleatorio(0,enemigos.length * 10) == 4){
+			// 	disparosEnemigos.push(agregarDisparosEnemigos(enemigo));
+			// }
+			if (parseInt(Math.random() * 100 ) == 4){
+				disparosEnemigos.push(agregarDisparosEnemigos(enemigo));
+			}
 		}
 		if (enemigo && enemigo.estado == "hit") {
 			enemigo.contador++;
@@ -183,15 +220,31 @@ function verificarContacto(){
 			};
 		};
 	};
+	if (nave.estado == 'hit' || nave.estado == 'muerto') return ;
+	for (var i disparosEnemigos) {
+		var disparo = disparosEnemigos[i];
+		if (hit(disparo, nave)){
+			nave.estado = 'hit';
+		}
+	};
+}
+
+function aleatorio(inferior, superior){
+	var posibilidades = superior - inferior;
+	var a = Math.random() * posibilidades;
+	a = Math.floor(a);
+	return parseInt(inferior) + a
 }
 
 function frameloop(){
 	moveNave()
 	actualizaEnemigos();
 	moveDisparos();
+	moverDisparosEnemigos();
 	drawBackground();
 	verificarContacto();
 	dibujarEnemigos();
+	dibujarDisparosEnemigos();
 	drawDisparos();
 	drawNave();
 }
