@@ -18,6 +18,7 @@ var teclado = [];
 var disparos = [];
 var disparosEnemigos = [];
 var enemigos = [];
+
 var fondo;
 
 function loadMedia(){
@@ -28,6 +29,7 @@ function loadMedia(){
 	}
 }
 
+
 function dibujarEnemigos(){
 	for(var i in enemigos){
 		var enemigo =  enemigos[i];
@@ -35,6 +37,7 @@ function dibujarEnemigos(){
 		if (enemigo.estado == 'vivo') { ctx.fillStyle = 'red'};
 		if (enemigo.estado == 'muerto') { ctx.fillStyle = 'black' };
 		ctx.fillRect(enemigo.x, enemigo.y, enemigo.width, enemigo.height);
+
 
 	}
 }
