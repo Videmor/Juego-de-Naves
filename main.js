@@ -6,7 +6,8 @@ var nave = {
 	x: 100,
 	y: canvas.height - 100,
 	width: 50,
-	height: 50
+	height: 50,
+	contador: 0
 }
 
 var juego = {
@@ -94,7 +95,17 @@ function moveNave(){
 		}
 
 	}else teclado.fire = false;
-
+	if (nave.estado == 'hint'){
+		nave.contador++;
+		if (nave.contador >= 20){
+			nave.contador = 0;
+			nave.estado = "muerto";
+			juego.estado = 'perdido';
+			textoRespuesta.titulo = "Game Over";
+			textoRespuesta.subtitulo = "Presiona la tecla R para continuar";
+			textoRespuesta.contador = 0;
+		}
+	}
 }
 
 function moveDisparos(){
