@@ -95,7 +95,7 @@ function moveNave(){
 		}
 
 	}else teclado.fire = false;
-	if (nave.estado == 'hint'){
+	if (nave.estado == 'hit'){
 		nave.contador++;
 		if (nave.contador >= 20){
 			nave.contador = 0;
