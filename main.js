@@ -25,13 +25,41 @@ var disparos = [];
 var disparosEnemigos = [];
 var enemigos = [];
 
-var fondo;
-
+var fondo, imgNave, imgEnemigo, imgDisparo, imgDisparoEnemigo;
+var imagenes = ['monster.png', 'spaceship.png', 'fondo.jpg']
+var preloader;
 function loadMedia(){
-	fondo = new Image();
-	fondo.src = 'img/fondo.jpg';
-	fondo.onload = function(){
-		var intervalo = window.setInterval(frameloop, 1000/55);
+	preloader = new PreloadJS();
+	preloader.onProgress = progresoCarga;
+	cargar();
+	// fondo = new Image();
+	// fondo.src = 'img/fondo.jpg';
+	// fondo.onload = function(){
+	// 	var intervalo = window.setInterval(frameloop, 1000/55);
+	// }
+}
+
+function cargar(){
+	while(imagenes.length > 0){
+		var imagen = imagenes.shift();
+		preloader.loadFile("img/" + imagen);
+	}
+}
+
+function progresoCarga(){
+	console.log(parseInt(preloader.progress * 100) + "")
+	if (preloader.progress == 1){
+		var intervalo = window.setInterval(frameloop, 1000/20);
+		fondo = new Image();
+		fondo.src = 'img/fondo.jpg'
+		imgNave = new Image();
+		imgNave.src = 'img/spaceship.png';
+		imgEnemigo = new Image();
+		imgEnemigo.src = 'img/monster.png'
+		// imgDisparo = new Image();
+		// imgDisparo.src = 'img/laser.png'
+		// imgDisparoEnemigo = new Image();
+		// imgDisparoEnemigo.src = 'img/enemyLaser.png'
 	}
 }
 
@@ -42,9 +70,7 @@ function dibujarEnemigos(){
 		ctx.save();
 		if (enemigo.estado == 'vivo') { ctx.fillStyle = 'red'};
 		if (enemigo.estado == 'muerto') { ctx.fillStyle = 'black' };
-		ctx.fillRect(enemigo.x, enemigo.y, enemigo.width, enemigo.height);
-
-
+		ctx.drawImage(imgEnemigo,enemigo.x, enemigo.y, enemigo.width, enemigo.height);
 	}
 }
 
@@ -54,8 +80,7 @@ function drawBackground(){
 
 function drawNave(){
 	ctx.save();
-	ctx.fillStyle = 'white';
-	ctx.fillRect(nave.x, nave.y, nave.width, nave.height );
+	ctx.drawImage(imgNave,nave.x, nave.y, nave.width, nave.height );
 	ctx.restore();
 }
 
@@ -200,7 +225,7 @@ function actualizaEnemigos(){
 
 function drawDisparos(){
 	ctx.save();
-	ctx.fillStyle = "white";
+	// ctx.fillStyle = "white";
 	for (var i in disparos) {
 		var disparo = disparos[i];
 		ctx.fillRect(disparo.x, disparo.y, disparo.width, disparo.height);
@@ -223,14 +248,14 @@ function dibujaTexto(){
 		ctx.font = "Bold 40pt Arial";
 		ctx.fillText(textoRespuesta.titulo, 140, 200);
 		ctx.font = "14pt Arial";
-		ctx.fillText(textoRespuesta.subtitulo, 190, 200);
+		ctx.fillText(textoRespuesta.subtitulo, 190, 240);
 	}
 	if(juego.estado == 'victoria'){
 		ctx.fillStyle = 'White';
 		ctx.font = "Bold 40pt Arial";
 		ctx.fillText(textoRespuesta.titulo, 140, 200);
 		ctx.font = "14pt Arial";
-		ctx.fillText(textoRespuesta.subtitulo, 190, 200);
+		ctx.fillText(textoRespuesta.subtitulo, 190, 240);
 	}
 }
 
@@ -243,6 +268,11 @@ function actualizarEstadoJuego(){
 	}
 	if (textoRespuesta.contador >= 0){
 		textoRespuesta.contador++;
+	}
+	if (( juego.estado == "perdido" || juego.estado == "victoria" ) && teclado[82] ){
+		juego.estado = 'iniciando';
+		nave.estado = 'vivo';
+		textoRespuesta.contador = -1;
 	}
 }
 
@@ -308,5 +338,9 @@ function frameloop(){
 	dibujaTexto();
 }
 
-addEventKeyboard()
-loadMedia();
+
+window.addEventListener('load', init);
+function init(){
+	addEventKeyboard()
+	loadMedia();
+}
